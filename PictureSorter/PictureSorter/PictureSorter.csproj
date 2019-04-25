@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{DBB5884C-F42D-4E46-A4FB-FAE7BBBAE7CE}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>PictureSorter</RootNamespace>
-    <AssemblyName>PictureSorter</AssemblyName>
+    <RootNamespace>Pickture</RootNamespace>
+    <AssemblyName>Pickture</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -74,6 +74,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

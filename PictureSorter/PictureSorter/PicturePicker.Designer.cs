@@ -96,7 +96,6 @@
             this.ImageNameLabel.Name = "ImageNameLabel";
             this.ImageNameLabel.Size = new System.Drawing.Size(513, 21);
             this.ImageNameLabel.TabIndex = 5;
-            this.ImageNameLabel.Text = "Asdasd";
             this.ImageNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // skipImageButton
@@ -126,7 +125,6 @@
             this.sourcePathLabel.Name = "sourcePathLabel";
             this.sourcePathLabel.Size = new System.Drawing.Size(510, 20);
             this.sourcePathLabel.TabIndex = 5;
-            this.sourcePathLabel.Text = "Asdasd";
             this.sourcePathLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // PicturePicker
