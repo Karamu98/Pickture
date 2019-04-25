@@ -13,12 +13,17 @@ namespace PictureSorter
 {
     public partial class PicturePicker : Form
     {
-        Dictionary<Button, string> buttons = new Dictionary<Button, string>();
+        public Dictionary<Button, string> buttons = new Dictionary<Button, string>(); // Hashset? 
+        public Button buttonToEdit;
 
-        string sourcePath;
-        string currentImagePath;
+        string srcPath; // Location of the source folder
+        string curImgPath; // Path to current image
 
-        Queue<string> sourceImages = new Queue<string>();
+        // Storing the last copy
+        string preImagePath; // Path to previos image
+        string preImageDir; // Directory of previous image
+
+        Queue<string> imageQueue = new Queue<string>(); // Queue of images to cycle
 
 
         public PicturePicker()
@@ -26,36 +31,74 @@ namespace PictureSorter
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Callback for when a destination button is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnButtonClicked(object sender, EventArgs e)
         {
-            Button btn = sender as Button;
+            Button btn = sender as Button; // Grab the button
 
-            if(currentImagePath != null && currentImagePath != "")
+            if(curImgPath != null && curImgPath != "")
             {
-                string destination = buttons[btn];
-                string fileName = currentImagePath.Split(System.IO.Path.DirectorySeparatorChar).Last();
+                string dest = buttons[btn];
+                string fileName = curImgPath.Split(System.IO.Path.DirectorySeparatorChar).Last();
 
-                if (Directory.Exists(destination))
+                if (Directory.Exists(dest))
                 {
-                    File.Copy(currentImagePath, destination + fileName, true);
+                    File.Copy(curImgPath, dest + fileName, true);
+
+                    preImagePath = curImgPath;
+                    preImageDir = dest + fileName;
 
                     ChangePicture();
 
                 }
                 else
                 {
-                    MessageBox.Show("Failed to copy");
+                    MessageBox.Show("Destination '" + dest + "' no longer exists");
                 }
             }
         }
 
+        private void OnDestinationEdit(object sender, EventArgs e)
+        {
+            EditDestination editDestinationForm = new EditDestination();
+            editDestinationForm.parentForm = this;
+            if(editDestinationForm.ShowDialog() == DialogResult.OK)
+            {
+
+            }
+
+        }
+
         private void ChangePicture()
         {
-            // Push image to back, change labels and image
-            sourceImages.Enqueue(sourceImages.Dequeue());
-            currentImagePath = sourceImages.Peek();
-            ImageNameLabel.Text = sourceImages.Peek();
-            pictureSlot.ImageLocation = sourceImages.Peek();
+            // Remove image but track, change labels and image
+            if (imageQueue.Count > 0)
+            {
+                preImagePath = imageQueue.Dequeue();
+                if(imageQueue.Count > 0)
+                {
+                    curImgPath = imageQueue.Peek();
+                    ImageNameLabel.Text = imageQueue.Peek();
+                    pictureSlot.ImageLocation = imageQueue.Peek();
+                }
+                else
+                {
+                    curImgPath = "";
+                    ImageNameLabel.Text = "";
+                    pictureSlot.ImageLocation = "";
+                }
+
+            }
+            else
+            {
+                curImgPath = "";
+                ImageNameLabel.Text = "";
+                pictureSlot.ImageLocation = "";
+            }
         }
 
         private void addFolderToolStripMenuItem_Click(object sender, EventArgs e)
@@ -73,6 +116,9 @@ namespace PictureSorter
                 destButtonLayout.Controls.Add(newButton);
 
                 buttons.Add(newButton, addDestinationForm.destDir + "\\");
+
+                // Add the edit selection
+                ToolStripItem newItem = editDestinations.DropDownItems.Add(newButton.Text, null, OnDestinationEdit);
             }
         }
 
@@ -83,45 +129,104 @@ namespace PictureSorter
 
         private void setSourceFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(sourcePicker.ShowDialog() == DialogResult.OK)
+            if (sourcePicker.ShowDialog() == DialogResult.OK)
             {
-                sourcePath = sourcePicker.SelectedPath;
-                sourcePathLabel.Text = sourcePath;
+                // Clear
+                imageQueue.Clear();
+                preImagePath = "";
+                preImageDir = "";
+                curImgPath = "";
+
+                srcPath = sourcePicker.SelectedPath;
+                sourcePathLabel.Text = srcPath;
 
                 // Get all images
                 DirectoryInfo folder;
-                FileInfo[] images;
+                List<FileInfo> images = new List<FileInfo>();
 
-                folder = new DirectoryInfo(sourcePath);
-                images = folder.GetFiles("*.png", SearchOption.AllDirectories);
+                folder = new DirectoryInfo(srcPath);
 
-                if (images.Length > 0)
+                FileInfo[] pngs = folder.GetFiles("*.png", SearchOption.TopDirectoryOnly);
+                FileInfo[] jpgs = folder.GetFiles("*.jpg", SearchOption.TopDirectoryOnly);
+
+                images.InsertRange(0, pngs);
+                images.InsertRange(0, jpgs);
+
+                if (images.Count > 0)
                 {
                     foreach (FileInfo file in images)
                     {
-                        
-                        sourceImages.Enqueue(sourcePath + "\\" + file.Name);
+                        imageQueue.Enqueue(srcPath + "\\" + file.Name);
                     }
 
-                    ChangePicture();
+                    // Present the first image
+                    curImgPath = imageQueue.Peek();
+                    ImageNameLabel.Text = imageQueue.Peek();
+                    pictureSlot.ImageLocation = imageQueue.Peek();
                 }
                 else
                 {
-                    MessageBox.Show("No images found at " + sourcePath);
+                    curImgPath = "";
+                    ImageNameLabel.Text = "";
+                    pictureSlot.ImageLocation = "";
+                    MessageBox.Show("No images found at " + srcPath);
                 }
             }
         }
 
         private void skipImageButton_Click(object sender, EventArgs e)
         {
-            if(sourceImages.Count <= 0)
+            if(imageQueue.Count <= 0)
             {
                 MessageBox.Show("No Images to skip");
                 return;
             }
 
-            ChangePicture();
+            // Skip
+            preImagePath = curImgPath;
+            preImageDir = "";
 
+            // If the current image is on top of the queue
+            if(curImgPath == imageQueue.Peek())
+            {
+                // Move it to the back
+                imageQueue.Enqueue(imageQueue.Dequeue());
+            }
+            else
+            {
+                // Add it to the back of the queue
+                imageQueue.Enqueue(preImagePath);
+            }
+
+            // Show top of queue
+            curImgPath = imageQueue.Peek();
+            ImageNameLabel.Text = imageQueue.Peek();
+            pictureSlot.ImageLocation = imageQueue.Peek();
+        }
+
+        private void button1_Click(object sender, EventArgs e) // Back
+        {
+            if(File.Exists(preImageDir))
+            {
+                File.Delete(preImageDir);
+
+                curImgPath = preImagePath;
+                ImageNameLabel.Text = preImagePath;
+                pictureSlot.ImageLocation = preImagePath;
+            }
+            else
+            {
+                if(preImagePath == "" || preImagePath == null)
+                {
+
+                }
+                else
+                {
+                    curImgPath = preImagePath;
+                    ImageNameLabel.Text = preImagePath;
+                    pictureSlot.ImageLocation = preImagePath;
+                }
+            }
         }
     }
 }

@@ -32,12 +32,15 @@
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setSourceFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editDestinations = new System.Windows.Forms.ToolStripMenuItem();
             this.pictureSlot = new System.Windows.Forms.PictureBox();
             this.ImageNameLabel = new System.Windows.Forms.Label();
             this.skipImageButton = new System.Windows.Forms.Button();
             this.destButtonLayout = new System.Windows.Forms.FlowLayoutPanel();
             this.sourcePicker = new System.Windows.Forms.FolderBrowserDialog();
             this.sourcePathLabel = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureSlot)).BeginInit();
             this.SuspendLayout();
@@ -45,7 +48,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.settingsToolStripMenuItem});
+            this.settingsToolStripMenuItem,
+            this.editToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(537, 24);
@@ -75,6 +79,21 @@
             this.setSourceFolderToolStripMenuItem.Text = "Set Source Folder";
             this.setSourceFolderToolStripMenuItem.Click += new System.EventHandler(this.setSourceFolderToolStripMenuItem_Click);
             // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editDestinations});
+            this.editToolStripMenuItem.Enabled = false;
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
+            this.editToolStripMenuItem.Text = "Edit";
+            // 
+            // editDestinations
+            // 
+            this.editDestinations.Name = "editDestinations";
+            this.editDestinations.Size = new System.Drawing.Size(139, 22);
+            this.editDestinations.Text = "Destinations";
+            // 
             // pictureSlot
             // 
             this.pictureSlot.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -101,7 +120,7 @@
             // skipImageButton
             // 
             this.skipImageButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.skipImageButton.Location = new System.Drawing.Point(230, 424);
+            this.skipImageButton.Location = new System.Drawing.Point(261, 423);
             this.skipImageButton.Name = "skipImageButton";
             this.skipImageButton.Size = new System.Drawing.Size(72, 23);
             this.skipImageButton.TabIndex = 3;
@@ -127,11 +146,23 @@
             this.sourcePathLabel.TabIndex = 5;
             this.sourcePathLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // button1
+            // 
+            this.button1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.button1.Location = new System.Drawing.Point(180, 423);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "Back";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // PicturePicker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(537, 467);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.sourcePathLabel);
             this.Controls.Add(this.destButtonLayout);
             this.Controls.Add(this.skipImageButton);
@@ -162,6 +193,9 @@
         private System.Windows.Forms.FlowLayoutPanel destButtonLayout;
         private System.Windows.Forms.FolderBrowserDialog sourcePicker;
         private System.Windows.Forms.Label sourcePathLabel;
+        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editDestinations;
+        private System.Windows.Forms.Button button1;
     }
 }
 
