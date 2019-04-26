@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddDestination));
             this.label1 = new System.Windows.Forms.Label();
             this.destName = new System.Windows.Forms.TextBox();
             this.pickSource = new System.Windows.Forms.Button();
@@ -69,8 +70,9 @@
             this.Controls.Add(this.pickSource);
             this.Controls.Add(this.destName);
             this.Controls.Add(this.label1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AddDestination";
-            this.Text = "AddDestination";
+            this.Text = "Add Destination";
             this.ResumeLayout(false);
             this.PerformLayout();
 

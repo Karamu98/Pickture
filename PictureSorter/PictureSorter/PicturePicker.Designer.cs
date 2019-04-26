@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PicturePicker));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -83,7 +84,6 @@
             // 
             this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.editDestinations});
-            this.editToolStripMenuItem.Enabled = false;
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
             this.editToolStripMenuItem.Text = "Edit";
@@ -91,7 +91,7 @@
             // editDestinations
             // 
             this.editDestinations.Name = "editDestinations";
-            this.editDestinations.Size = new System.Drawing.Size(139, 22);
+            this.editDestinations.Size = new System.Drawing.Size(180, 22);
             this.editDestinations.Text = "Destinations";
             // 
             // pictureSlot
@@ -169,6 +169,7 @@
             this.Controls.Add(this.ImageNameLabel);
             this.Controls.Add(this.pictureSlot);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "PicturePicker";
             this.Text = "Pickture";

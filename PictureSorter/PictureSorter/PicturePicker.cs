@@ -15,6 +15,9 @@ namespace PictureSorter
     {
         public Dictionary<Button, string> buttons = new Dictionary<Button, string>(); // Hashset? 
         public Button buttonToEdit;
+        private ToolStripItem itemToEdit;
+
+        public Dictionary<ToolStripItem, Button> toolButtons = new Dictionary<ToolStripItem, Button>();
 
         string srcPath; // Location of the source folder
         string curImgPath; // Path to current image
@@ -64,13 +67,32 @@ namespace PictureSorter
 
         private void OnDestinationEdit(object sender, EventArgs e)
         {
-            EditDestination editDestinationForm = new EditDestination();
-            editDestinationForm.parentForm = this;
-            if(editDestinationForm.ShowDialog() == DialogResult.OK)
+            itemToEdit = sender as ToolStripItem;
+            buttonToEdit = toolButtons[itemToEdit];
+
+            EditDestination editDestForm = new EditDestination();
+            editDestForm.parentForm = this;
+
+            DialogResult result = editDestForm.ShowDialog();
+
+            if (result == DialogResult.OK) // Button edit
             {
-
+                itemToEdit.Text = editDestForm.name;
+                buttonToEdit.Text = editDestForm.name;
+                buttons[buttonToEdit] = editDestForm.destDir;
             }
+            else if(result == DialogResult.No) // Button to be deleted
+            {
+                // Button removal
+                destButtonLayout.Controls.Remove(buttonToEdit);
+                buttons.Remove(buttonToEdit);
+                buttonToEdit = null;
 
+                // Tool bar removal
+                editDestinations.DropDownItems.Remove(itemToEdit);
+                toolButtons.Remove(itemToEdit);
+                itemToEdit = null;
+            }
         }
 
         private void ChangePicture()
@@ -119,6 +141,8 @@ namespace PictureSorter
 
                 // Add the edit selection
                 ToolStripItem newItem = editDestinations.DropDownItems.Add(newButton.Text, null, OnDestinationEdit);
+
+                toolButtons.Add(newItem, newButton);
             }
         }
 
@@ -127,7 +151,7 @@ namespace PictureSorter
             // On load function
         }
 
-        private void setSourceFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        private void setSourceFolderToolStripMenuItem_Click(object sender, EventArgs e) // Find source folder
         {
             if (sourcePicker.ShowDialog() == DialogResult.OK)
             {
@@ -202,7 +226,7 @@ namespace PictureSorter
             curImgPath = imageQueue.Peek();
             ImageNameLabel.Text = imageQueue.Peek();
             pictureSlot.ImageLocation = imageQueue.Peek();
-        }
+        } // Skip clicked
 
         private void button1_Click(object sender, EventArgs e) // Back
         {
