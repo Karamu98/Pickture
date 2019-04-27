@@ -91,7 +91,7 @@
             // editDestinations
             // 
             this.editDestinations.Name = "editDestinations";
-            this.editDestinations.Size = new System.Drawing.Size(180, 22);
+            this.editDestinations.Size = new System.Drawing.Size(139, 22);
             this.editDestinations.Text = "Destinations";
             // 
             // pictureSlot
